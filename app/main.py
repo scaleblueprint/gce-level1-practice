@@ -267,7 +267,7 @@ async def start_attempt(request: Request, user: User = Depends(require_user), db
     if old:
         maybe_auto_finish(old, db)
         if not old.is_finished:
-            return JSONResponse({"error": "An active attempt already exists.", "attempt": serialize_attempt(old)}, status_code=409)
+            return JSONResponse({"error": "You already have an active mock attempt.", "attempt": serialize_attempt(old)}, status_code=409)
     a = Attempt(
         user_id=user.id,
         mock_label=f"Mock {label}",
@@ -287,6 +287,34 @@ def get_attempt(attempt_id: int, user: User = Depends(require_user), db: Session
     if not a or a.user_id != user.id:
         raise HTTPException(404)
     maybe_auto_finish(a, db)
+    return serialize_attempt(a)
+
+@app.post("/api/attempts/{attempt_id}/reset")
+def reset_attempt(attempt_id: int, user: User = Depends(require_user), db: Session = Depends(get_db)):
+    a = db.get(Attempt, attempt_id)
+    if not a or a.user_id != user.id:
+        raise HTTPException(404, "Attempt not found")
+    if a.is_finished:
+        raise HTTPException(409, "Completed attempts cannot be reset. Use Retake to create a new attempt instead.")
+    label = (a.mock_label or "Mock A").replace("Mock ", "").strip().upper()
+    seed_map = {"A": 11, "B": 29, "C": 47}
+    seed = seed_map.get(label, 11)
+    a.started_at = now()
+    a.finished_at = None
+    a.duration_seconds = 10800
+    a.question_ids = pick_questions(seed)
+    a.answers = {}
+    a.flags = {}
+    a.lab_ids = pick_labs(seed)
+    a.lab_states = {}
+    a.lab_scores = {}
+    a.question_score = None
+    a.question_pct = None
+    a.lab_points = None
+    a.lab_pct = None
+    a.composite_pct = None
+    a.is_finished = False
+    db.add(a); db.commit(); db.refresh(a)
     return serialize_attempt(a)
 
 @app.patch("/api/attempts/{attempt_id}/answer")
