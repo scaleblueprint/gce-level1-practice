@@ -4,17 +4,31 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>GCE Level 1 Practice App</title>
-<link rel="stylesheet" href="/static/app.css">
+<link rel="stylesheet" href="/static/app.css?v=20261014-3">
+<script>
+window.view=function(id){
+  const target=document.getElementById(id);
+  if(!target)return;
+  document.querySelectorAll('.page').forEach(function(x){x.classList.remove('active')});
+  target.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+};
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('[data-view]').forEach(function(btn){
+    btn.addEventListener('click',function(e){e.preventDefault();window.view(btn.getAttribute('data-view'))});
+  });
+});
+</script>
 </head>
 <body>
 <header>
   <div><b>Educator Level 1 Practice</b><small>{{ email }}</small></div>
   <nav>
-    <button onclick="view('dashboard')">Dashboard</button>
-    <button onclick="view('guide')">Exam Guide</button>
-    <button onclick="view('study')">Study</button>
-    <button onclick="view('exam')">Mock Exam</button>
-    <button onclick="view('history')">History</button>
+    <button type="button" data-view="dashboard">Dashboard</button>
+    <button type="button" data-view="guide">Exam Guide</button>
+    <button type="button" data-view="study">Study</button>
+    <button type="button" data-view="exam">Mock Exam</button>
+    <button type="button" data-view="history">History</button>
     <form method="post" action="/logout"><button>Logout</button></form>
   </nav>
 </header>
@@ -24,7 +38,7 @@
   <div class="grid3" id="dashcards"></div>
   <div class="card">
     <h2>Before you start</h2>
-    <p>New to the certification exam? Read the <button class="linkbtn" onclick="view('guide')">Exam Guide</button> first, then use <button class="linkbtn" onclick="view('study')">Study</button> to revise the Google Workspace skills that the mock exams practise.</p>
+    <p>New to the certification exam? Read the <button type="button" class="linkbtn" data-view="guide">Exam Guide</button> first, then use <button type="button" class="linkbtn" data-view="study">Study</button> to revise the Google Workspace skills that the mock exams practise.</p>
   </div>
   <div class="card">
     <h2>Start a new full mock</h2>
@@ -72,7 +86,7 @@
 </section>
 
 <section id="study" class="page">
-  <div class="studyhead"><div><span class="eyebrow">STUDY MATERIALS</span><h1>Level 1 skills you should be able to perform without help</h1><p>Use these concise revision notes before attempting the timed mocks. The focus is on practical classroom decisions and common Workspace workflows.</p></div><button class="primary" onclick="view('exam')">Go to Mock Exam</button></div>
+  <div class="studyhead"><div><span class="eyebrow">STUDY MATERIALS</span><h1>Level 1 skills you should be able to perform without help</h1><p>Use these concise revision notes before attempting the timed mocks. The focus is on practical classroom decisions and common Workspace workflows.</p></div><button class="primary" type="button" data-view="exam">Go to Mock Exam</button></div>
 
   <div class="card"><h2>Recommended order</h2><div class="studyroute"><span>Drive & sharing</span><b>→</b><span>Docs & Slides</span><b>→</b><span>Classroom</span><b>→</b><span>Gmail</span><b>→</b><span>Calendar & Meet</span><b>→</b><span>Forms & Sheets</span></div></div>
 
@@ -114,6 +128,6 @@
 <section id="exam" class="page"><div id="exambox"></div></section>
 <section id="history" class="page"><div class="card"><h2>Attempt history</h2><div id="historybox"></div></div></section>
 </main>
-<script src="/static/app.js"></script>
+<script src="/static/app.js?v=20261014-3"></script>
 </body>
 </html>
