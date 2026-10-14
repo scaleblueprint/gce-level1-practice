@@ -1,10 +1,119 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GCE Level 1 Practice App</title><link rel="stylesheet" href="/static/app.css"></head>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GCE Level 1 Practice App</title>
+<link rel="stylesheet" href="/static/app.css">
+</head>
 <body>
-<header><div><b>Educator Level 1 Practice</b><small>{{ email }}</small></div><nav><button onclick="view('dashboard')">Dashboard</button><button onclick="view('exam')">Exam</button><button onclick="view('history')">History</button><form method="post" action="/logout"><button>Logout</button></form></nav></header>
+<header>
+  <div><b>Educator Level 1 Practice</b><small>{{ email }}</small></div>
+  <nav>
+    <button onclick="view('dashboard')">Dashboard</button>
+    <button onclick="view('guide')">Exam Guide</button>
+    <button onclick="view('study')">Study</button>
+    <button onclick="view('exam')">Mock Exam</button>
+    <button onclick="view('history')">History</button>
+    <form method="post" action="/logout"><button>Logout</button></form>
+  </nav>
+</header>
 <main>
-<section id="dashboard" class="page active"><div class="notice"><b>Persistent mode:</b> answers and lab states save to the server after each action. You can refresh, close the browser, sign in later, or sign in on another device and resume the same attempt.</div><div class="grid3" id="dashcards"></div><div class="card"><h2>Start a new full mock</h2><p>37 questions + 3 assigned lab scenarios + 3-hour server-timed session.</p><div class="row"><select id="mockLabel"><option>A</option><option>B</option><option>C</option></select><button class="primary" onclick="startAttempt()">Start mock</button></div></div></section>
+<section id="dashboard" class="page active">
+  <div class="notice"><b>Your work is saved:</b> answers and lab states save to the server. You can refresh, close the browser, sign in later, or use another device and resume the same attempt.</div>
+  <div class="grid3" id="dashcards"></div>
+  <div class="card">
+    <h2>Before you start</h2>
+    <p>New to the certification exam? Read the <button class="linkbtn" onclick="view('guide')">Exam Guide</button> first, then use <button class="linkbtn" onclick="view('study')">Study</button> to revise the Google Workspace skills that the mock exams practise.</p>
+  </div>
+  <div class="card">
+    <h2>Start a new full mock</h2>
+    <p>37 questions + 3 assigned lab scenarios + a 3-hour server-timed session.</p>
+    <div class="row"><select id="mockLabel"><option>A</option><option>B</option><option>C</option></select><button class="primary" onclick="startAttempt()">Start mock</button></div>
+  </div>
+</section>
+
+<section id="guide" class="page">
+  <div class="guidehero">
+    <div><span class="eyebrow">GOOGLE CERTIFIED EDUCATOR LEVEL 1</span><h1>Know what to expect before exam day</h1><p>This guide summarizes the current Google-published exam experience and the practical workflow you should be ready for.</p></div>
+    <div class="formatbox"><b>Interactive exam</b><strong>37 + 3</strong><span>37 multiple-choice questions + 3 lab scenarios</span><strong>3 hours</strong><span>Total exam window</span></div>
+  </div>
+
+  <div class="grid3">
+    <div class="card"><h3>1. Before the exam</h3><ul class="cleanlist"><li>Use the latest version of Google Chrome.</li><li>Have a working webcam available for the certification exam.</li><li>Make sure your internet connection and device are stable.</li><li>For the lab portion, Google recommends using an Incognito window; a remote browser session can be provided when needed.</li></ul></div>
+    <div class="card"><h3>2. Question section</h3><ul class="cleanlist"><li>Expect scenario-based multiple-choice questions rather than simple definitions.</li><li>Focus on choosing the most appropriate Google Workspace tool or setting for the classroom situation.</li><li>Pay attention to sharing roles, collaboration, organization, communication, and creation workflows.</li></ul></div>
+    <div class="card"><h3>3. Lab section</h3><ul class="cleanlist"><li>The interactive exam includes three lab-based scenarios.</li><li>Google provides an exam lab account or remote session for completing the tasks.</li><li>You perform actual Workspace actions from the instructions, so knowing where settings live matters as much as knowing the terminology.</li></ul></div>
+  </div>
+
+  <div class="card">
+    <h2>Exam-day workflow</h2>
+    <div class="steps">
+      <div><b>01</b><span><strong>Read the whole scenario</strong><small>Understand the final outcome before clicking around.</small></span></div>
+      <div><b>02</b><span><strong>Notice exact requirements</strong><small>Names, permissions, dates, recurrence, labels and file locations matter.</small></span></div>
+      <div><b>03</b><span><strong>Complete the Workspace actions</strong><small>Work methodically and verify the requested setting before moving on.</small></span></div>
+      <div><b>04</b><span><strong>Manage your time</strong><small>The interactive exam gives three hours for both the questions and labs together.</small></span></div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="card"><h2>After the exam</h2><p>Google says pass/fail results are normally emailed within three business days. If a candidate does not pass, the published retake waiting period is eight days. Level 1 certification is valid for 36 months.</p><p class="muted">Our mock scores are practice indicators only; they are not Google's official scoring formula.</p></div>
+    <div class="card"><h2>Language note</h2><p>Google currently documents two Level 1 exam experiences depending on language. The interactive experience is 37 multiple-choice questions + 3 lab scenarios in 3 hours. A multiple-choice-only experience in some languages is 37 questions in 2 hours.</p></div>
+  </div>
+
+  <div class="card sources">
+    <h2>Official Google preparation sources</h2>
+    <div class="resourcegrid">
+      <a target="_blank" rel="noopener" href="https://support.google.com/googleforeducation/answer/16542372?hl=en">Current Level 1 & Level 2 Exam FAQ <span>↗</span></a>
+      <a target="_blank" rel="noopener" href="https://services.google.com/fh/files/misc/level1_certified_educator_exam_guide.pdf">Level 1 Exam Guide <span>↗</span></a>
+      <a target="_blank" rel="noopener" href="https://services.google.com/fh/files/misc/google_certified_educator_level1_basic_tasks.pdf">Level 1 Task Cards <span>↗</span></a>
+      <a target="_blank" rel="noopener" href="https://services.google.com/fh/files/misc/sample_gce_exam_questions.pdf">Official Sample Questions <span>↗</span></a>
+    </div>
+  </div>
+</section>
+
+<section id="study" class="page">
+  <div class="studyhead"><div><span class="eyebrow">STUDY MATERIALS</span><h1>Level 1 skills you should be able to perform without help</h1><p>Use these concise revision notes before attempting the timed mocks. The focus is on practical classroom decisions and common Workspace workflows.</p></div><button class="primary" onclick="view('exam')">Go to Mock Exam</button></div>
+
+  <div class="card"><h2>Recommended order</h2><div class="studyroute"><span>Drive & sharing</span><b>→</b><span>Docs & Slides</span><b>→</b><span>Classroom</span><b>→</b><span>Gmail</span><b>→</b><span>Calendar & Meet</span><b>→</b><span>Forms & Sheets</span></div></div>
+
+  <div class="studygrid">
+    <details class="studycard" open><summary><span>01</span><div><b>Google Drive & sharing</b><small>Organize files and give the right people the right access.</small></div></summary><div class="studybody"><h4>Know this</h4><p><b>Viewer</b> can read, <b>Commenter</b> can leave feedback without directly changing content, and <b>Editor</b> can modify the file. Prefer Restricted sharing for material intended only for named people.</p><h4>Be able to do</h4><ul><li>Create and organize folders and files.</li><li>Share a file with specific people and change their role.</li><li>Remove someone's access.</li><li>Search Drive and use clear file/folder names.</li><li>Use shortcuts where useful instead of creating unnecessary duplicates.</li></ul><div class="memory">Exam habit: ask “Does this person need to view, comment, or edit?” before choosing a permission.</div></div></details>
+
+    <details class="studycard"><summary><span>02</span><div><b>Docs & Slides collaboration</b><small>Work together without losing control of the original.</small></div></summary><div class="studybody"><h4>Know this</h4><p>Comments are for discussion and feedback. Suggesting mode lets someone propose edits that can be accepted or rejected. Version history helps identify changes and restore earlier content.</p><h4>Be able to do</h4><ul><li>Add and resolve comments.</li><li>Use @mentions to direct feedback.</li><li>Use Suggesting mode.</li><li>Open version history and understand why it is useful.</li><li>Use heading styles to structure a long Doc.</li></ul></div></details>
+
+    <details class="studycard"><summary><span>03</span><div><b>Google Classroom</b><small>Choose the correct post type and assignment settings.</small></div></summary><div class="studybody"><h4>Know the difference</h4><p><b>Assignment</b> = students submit work. <b>Material</b> = resource only. <b>Announcement</b> = class update. When attaching a template, “Make a copy for each student” gives every learner an individual editable copy.</p><h4>Be able to do</h4><ul><li>Create and schedule assignments.</li><li>Set due dates and clear instructions.</li><li>Attach Drive files with the correct student permission.</li><li>Post materials and announcements.</li><li>Recognize when a task should not be an assignment.</li></ul></div></details>
+
+    <details class="studycard"><summary><span>04</span><div><b>Gmail</b><small>Find messages quickly and organize them automatically.</small></div></summary><div class="studybody"><h4>Useful search operators</h4><div class="codegrid"><code>from:person@example.com</code><code>has:attachment</code><code>filename:pdf</code></div><h4>Be able to do</h4><ul><li>Create labels.</li><li>Create filters that automatically apply labels.</li><li>Combine search operators to narrow results.</li><li>Write useful subject lines and concise messages.</li></ul><div class="memory">Example: <code>from:principal@school.org has:attachment</code> finds messages from that sender that include attachments.</div></div></details>
+
+    <details class="studycard"><summary><span>05</span><div><b>Calendar & Google Meet</b><small>Schedule communication clearly and accessibly.</small></div></summary><div class="studybody"><h4>Be able to do</h4><ul><li>Create an event and invite guests.</li><li>Make an event recur weekly or on another schedule.</li><li>Add Google Meet conferencing.</li><li>Include useful context or an agenda in the event description.</li><li>Use Meet captions when they support participant accessibility.</li></ul><div class="memory">Scenario clue: if the need involves a date, recurrence, guests and a video meeting, think Calendar + Meet together.</div></div></details>
+
+    <details class="studycard"><summary><span>06</span><div><b>Google Forms</b><small>Collect structured information and build simple quizzes.</small></div></summary><div class="studybody"><h4>Be able to do</h4><ul><li>Create a Form and choose suitable question types.</li><li>Mark important questions Required.</li><li>Turn on quiz mode and configure answer keys/points where appropriate.</li><li>Use paragraph, multiple-choice, scale and other question types appropriately.</li><li>Send Form responses to Sheets for further analysis.</li></ul></div></details>
+
+    <details class="studycard"><summary><span>07</span><div><b>Google Sheets</b><small>Sort, filter, calculate and visualize response data.</small></div></summary><div class="studybody"><h4>Be able to do</h4><ul><li>Sort a full data range while keeping rows together.</li><li>Filter data without deleting rows.</li><li>Use a simple function such as <code>AVERAGE</code>.</li><li>Create a suitable chart for category comparisons.</li><li>Recognize when Forms response data should be analyzed in Sheets.</li></ul><div class="memory">Avoid sorting only one column when the surrounding row data must remain aligned.</div></div></details>
+
+    <details class="studycard"><summary><span>08</span><div><b>Sites, accessibility & cross-tool decisions</b><small>Choose the simplest tool that fits the educational outcome.</small></div></summary><div class="studybody"><h4>Know this</h4><p>Google Sites is suitable for a simple information site with pages and embedded resources. Accessibility choices such as readable structure, captions and clear instructions help more learners participate.</p><h4>Practice deciding</h4><ul><li>Site for a simple published information hub.</li><li>Docs for collaborative writing.</li><li>Slides for collaborative presentations.</li><li>Forms for structured collection.</li><li>Sheets for data analysis.</li><li>Calendar/Meet for scheduled live communication.</li></ul></div></details>
+  </div>
+
+  <div class="card">
+    <h2>Final readiness checklist</h2>
+    <div class="checkgrid">
+      <label><input type="checkbox"> I can choose Viewer, Commenter or Editor correctly.</label>
+      <label><input type="checkbox"> I can create a Classroom assignment and make a copy for each student.</label>
+      <label><input type="checkbox"> I can use Gmail search operators, labels and filters.</label>
+      <label><input type="checkbox"> I can schedule a recurring Calendar event with a Meet link.</label>
+      <label><input type="checkbox"> I can create a Form quiz with required questions.</label>
+      <label><input type="checkbox"> I can sort/filter a Sheet, calculate an average and create a chart.</label>
+      <label><input type="checkbox"> I understand comments, suggestions and version history.</label>
+      <label><input type="checkbox"> I can complete these actions without relying on step-by-step help.</label>
+    </div>
+  </div>
+
+  <div class="notice"><b>Important:</b> these are original revision notes based on Google's published objectives and Workspace skills. They do not contain confidential or leaked live certification questions.</div>
+</section>
+
 <section id="exam" class="page"><div id="exambox"></div></section>
 <section id="history" class="page"><div class="card"><h2>Attempt history</h2><div id="historybox"></div></div></section>
 </main>
-<script src="/static/app.js"></script></body></html>
+<script src="/static/app.js"></script>
+</body>
+</html>
