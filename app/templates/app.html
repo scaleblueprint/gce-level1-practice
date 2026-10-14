@@ -1,0 +1,10 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GCE Level 1 Practice App</title><link rel="stylesheet" href="/static/app.css"></head>
+<body>
+<header><div><b>Educator Level 1 Practice</b><small>{{ email }}</small></div><nav><button onclick="view('dashboard')">Dashboard</button><button onclick="view('exam')">Exam</button><button onclick="view('history')">History</button><form method="post" action="/logout"><button>Logout</button></form></nav></header>
+<main>
+<section id="dashboard" class="page active"><div class="notice"><b>Persistent mode:</b> answers and lab states save to the server after each action. You can refresh, close the browser, sign in later, or sign in on another device and resume the same attempt.</div><div class="grid3" id="dashcards"></div><div class="card"><h2>Start a new full mock</h2><p>37 questions + 3 assigned lab scenarios + 3-hour server-timed session.</p><div class="row"><select id="mockLabel"><option>A</option><option>B</option><option>C</option></select><button class="primary" onclick="startAttempt()">Start mock</button></div></div></section>
+<section id="exam" class="page"><div id="exambox"></div></section>
+<section id="history" class="page"><div class="card"><h2>Attempt history</h2><div id="historybox"></div></div></section>
+</main>
+<script src="/static/app.js"></script></body></html>
