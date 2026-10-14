@@ -40,6 +40,34 @@ def aware(dt):
         return None
     return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
 
+def parse_iso(value):
+    if not value:
+        return None
+    try:
+        return aware(datetime.fromisoformat(value))
+    except Exception:
+        return None
+
+def timing_for(a: Attempt):
+    flags = dict(a.flags or {})
+    paused_at = parse_iso(flags.get("__paused_at"))
+    paused_seconds = int(flags.get("__paused_seconds", 0) or 0)
+    started = aware(a.started_at)
+    finished = aware(a.finished_at)
+    if a.is_finished:
+        effective_end = paused_at or finished or now()
+    else:
+        effective_end = paused_at or now()
+    elapsed = max(0, int((effective_end - started).total_seconds()) - paused_seconds)
+    remaining = max(0, a.duration_seconds - elapsed)
+    return {
+        "remaining": remaining,
+        "elapsed": elapsed,
+        "is_paused": bool(paused_at and not a.is_finished),
+        "paused_at": paused_at,
+        "paused_seconds": paused_seconds,
+    }
+
 def current_user(request: Request, db: Session):
     uid = request.session.get("user_id")
     return db.get(User, uid) if uid else None
@@ -57,19 +85,18 @@ def check_password(password: str, hashed: str) -> bool:
     return bcrypt.checkpw(password.encode(), hashed.encode())
 
 def serialize_attempt(a: Attempt):
-    started = aware(a.started_at)
-    finished = aware(a.finished_at)
-    elapsed = int((now() - started).total_seconds()) if not a.is_finished else int((finished - started).total_seconds())
-    remaining = max(0, a.duration_seconds - elapsed)
+    timing = timing_for(a)
+    public_flags = {k: v for k, v in (a.flags or {}).items() if not str(k).startswith("__")}
     return {
         "id": a.id,
         "mock_label": a.mock_label,
         "started_at": a.started_at.isoformat(),
         "finished_at": a.finished_at.isoformat() if a.finished_at else None,
-        "remaining_seconds": remaining,
+        "remaining_seconds": timing["remaining"],
+        "is_paused": timing["is_paused"],
         "question_ids": a.question_ids,
         "answers": a.answers or {},
-        "flags": a.flags or {},
+        "flags": public_flags,
         "lab_ids": a.lab_ids,
         "lab_states": a.lab_states or {},
         "lab_scores": a.lab_scores or {},
@@ -162,7 +189,7 @@ def grade_lab(lab_id: str, state: dict):
     return {"passed": sum(checks), "total": len(checks), "details": checks}
 
 def maybe_auto_finish(a: Attempt, db: Session):
-    if not a.is_finished and (now() - aware(a.started_at)).total_seconds() >= a.duration_seconds:
+    if not a.is_finished and not timing_for(a)["is_paused"] and timing_for(a)["remaining"] <= 0:
         finish_attempt(a, db)
 
 def finish_attempt(a: Attempt, db: Session):
@@ -289,6 +316,41 @@ def get_attempt(attempt_id: int, user: User = Depends(require_user), db: Session
     maybe_auto_finish(a, db)
     return serialize_attempt(a)
 
+@app.post("/api/attempts/{attempt_id}/pause")
+def pause_attempt(attempt_id: int, user: User = Depends(require_user), db: Session = Depends(get_db)):
+    a = db.get(Attempt, attempt_id)
+    if not a or a.user_id != user.id:
+        raise HTTPException(404, "Attempt not found")
+    maybe_auto_finish(a, db)
+    if a.is_finished:
+        raise HTTPException(409, "This attempt has already finished.")
+    timing = timing_for(a)
+    if not timing["is_paused"]:
+        flags = dict(a.flags or {})
+        flags["__paused_at"] = now().isoformat()
+        flags.setdefault("__paused_seconds", timing["paused_seconds"])
+        a.flags = flags
+        db.add(a); db.commit(); db.refresh(a)
+    return serialize_attempt(a)
+
+@app.post("/api/attempts/{attempt_id}/resume")
+def resume_attempt(attempt_id: int, user: User = Depends(require_user), db: Session = Depends(get_db)):
+    a = db.get(Attempt, attempt_id)
+    if not a or a.user_id != user.id:
+        raise HTTPException(404, "Attempt not found")
+    if a.is_finished:
+        raise HTTPException(409, "This attempt has already finished.")
+    flags = dict(a.flags or {})
+    paused_at = parse_iso(flags.get("__paused_at"))
+    if paused_at:
+        already = int(flags.get("__paused_seconds", 0) or 0)
+        flags["__paused_seconds"] = already + max(0, int((now() - paused_at).total_seconds()))
+        flags.pop("__paused_at", None)
+        a.flags = flags
+        db.add(a); db.commit(); db.refresh(a)
+    maybe_auto_finish(a, db)
+    return serialize_attempt(a)
+
 @app.post("/api/attempts/{attempt_id}/reset")
 def reset_attempt(attempt_id: int, user: User = Depends(require_user), db: Session = Depends(get_db)):
     a = db.get(Attempt, attempt_id)
@@ -325,14 +387,19 @@ async def save_answer(attempt_id: int, request: Request, user: User = Depends(re
     maybe_auto_finish(a, db)
     if a.is_finished:
         raise HTTPException(409, "Attempt is finished")
+    if timing_for(a)["is_paused"]:
+        raise HTTPException(409, "This mock is paused. Resume it before changing answers.")
     payload = await request.json()
     idx = str(int(payload["index"]))
     answers = dict(a.answers or {})
     answers[idx] = payload.get("answer") or []
     flags = dict(a.flags or {})
-    flags[idx] = bool(payload.get("flag", False))
+    answers_meta = {k: v for k, v in flags.items() if str(k).startswith("__")}
+    question_flags = {k: v for k, v in flags.items() if not str(k).startswith("__")}
+    question_flags[idx] = bool(payload.get("flag", False))
+    question_flags.update(answers_meta)
     a.answers = answers
-    a.flags = flags
+    a.flags = question_flags
     db.add(a); db.commit()
     return {"ok": True}
 
@@ -344,6 +411,8 @@ async def save_lab(attempt_id: int, lab_id: str, request: Request, user: User = 
     maybe_auto_finish(a, db)
     if a.is_finished:
         raise HTTPException(409, "Attempt is finished")
+    if timing_for(a)["is_paused"]:
+        raise HTTPException(409, "This mock is paused. Resume it before changing lab work.")
     state = await request.json()
     states = dict(a.lab_states or {})
     states[lab_id] = state
