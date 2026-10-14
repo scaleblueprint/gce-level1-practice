@@ -1,0 +1,130 @@
+[
+  {
+    "domain": "Create",
+    "q": "A teacher wants every student to receive an individual editable copy of the same planning template in Classroom. Which attachment option is best?",
+    "choices": ["Students can view file","Students can edit file","Make a copy for each student","Attach as a link only"],
+    "answer": [2],
+    "exp": "Make a copy for each student gives each learner an individual copy while preserving the original.",
+    "multi": false
+  },
+  {
+    "domain": "Create",
+    "q": "You are preparing an assignment now but do not want students to see it until Monday morning. What should you do?",
+    "choices": ["Schedule it","Archive the class","Post it now and delete it later","Make every student a teacher"],
+    "answer": [0],
+    "exp": "Scheduling controls when the assignment becomes visible.",
+    "multi": false
+  },
+  {
+    "domain": "Create",
+    "q": "Which Google tool is the best fit for collecting structured responses from a class survey?",
+    "choices": ["Forms","Meet","Sites","Keep"],
+    "answer": [0],
+    "exp": "Forms is built for structured surveys, quizzes, and response collection.",
+    "multi": false
+  },
+  {
+    "domain": "Create",
+    "q": "You need a class information site with pages, links, images, and embedded resources without writing code. Which tool is most appropriate?",
+    "choices": ["Sites","Sheets","Gmail","Calendar"],
+    "answer": [0],
+    "exp": "Sites is designed for simple collaborative websites.",
+    "multi": false
+  },
+  {
+    "domain": "Create",
+    "q": "Which tool is best for creating a recurring weekly planning meeting and inviting colleagues?",
+    "choices": ["Calendar","Docs","Forms","Drive"],
+    "answer": [0],
+    "exp": "Calendar manages recurring events, guests, reminders, and conferencing.",
+    "multi": false
+  },
+  {
+    "domain": "Create",
+    "q": "A teacher wants students to submit a short reflection with one paragraph and a rating from 1–5. Which solution is most efficient?",
+    "choices": ["Create a Form with paragraph and linear-scale questions","Create a new Meet for every student","Ask students to rename a Drive folder","Create a Site page for every response"],
+    "answer": [0],
+    "exp": "Forms provides suitable question types and central response collection.",
+    "multi": false
+  },
+  {
+    "domain": "Create",
+    "q": "You want to create a short quiz that can automatically grade multiple-choice items. Which tool is the best starting point?",
+    "choices": ["Google Forms in quiz mode","Google Sites","Google Calendar","Google Chat"],
+    "answer": [0],
+    "exp": "Forms can be configured as a quiz with answer keys and points.",
+    "multi": false
+  },
+  {
+    "domain": "Create",
+    "q": "A teacher wants students to build a slide deck collaboratively. Which tool should be used?",
+    "choices": ["Google Slides","Google Forms","Google Calendar","Gmail"],
+    "answer": [0],
+    "exp": "Slides supports collaborative presentation creation.",
+    "multi": false
+  },
+  {
+    "domain": "Create",
+    "q": "You need to draft a lesson plan with headings, links, comments, and collaborative editing. Which tool is the best fit?",
+    "choices": ["Google Docs","Google Meet","Google Calendar","Google Forms"],
+    "answer": [0],
+    "exp": "Docs is designed for collaborative text documents.",
+    "multi": false
+  },
+  {
+    "domain": "Create",
+    "q": "A class needs one central folder containing instructions, reference files, and student resources. What is the best first step?",
+    "choices": ["Create a clearly named Drive folder","Email every file separately","Open a Meet call","Publish every file to the web"],
+    "answer": [0],
+    "exp": "A dedicated Drive folder creates a manageable resource structure.",
+    "multi": false
+  },
+  {
+    "domain": "Create",
+    "q": "Which two actions are useful when setting up a new Classroom assignment? (Select two.)",
+    "choices": ["Add clear instructions","Set an appropriate due date","Make the class public on the web","Give all students teacher permissions"],
+    "answer": [0,1],
+    "exp": "Clear instructions and an appropriate due date are core assignment setup actions.",
+    "multi": true
+  },
+  {
+    "domain": "Create",
+    "q": "A teacher wants students to choose a time slot for a short conference. Which Google Workspace approach best fits the need?",
+    "choices": ["Use Calendar scheduling/appointment features where available","Use version history","Use Gmail spam settings","Use a Sheet filter view only"],
+    "answer": [0],
+    "exp": "Calendar is the most suitable tool for managing time slots and meetings.",
+    "multi": false
+  },
+  {
+    "domain": "Create",
+    "q": "Which feature helps make a long Google Doc easier to navigate?",
+    "choices": ["Heading styles","Gmail labels","Calendar colors","Meet reactions"],
+    "answer": [0],
+    "exp": "Heading styles create structure and improve navigation.",
+    "multi": false
+  },
+  {
+    "domain": "Create",
+    "q": "Students will work in small groups on presentations. What is the most efficient file setup?",
+    "choices": ["Create one shared Slides file per group with edit access for group members","Create a public Site for every student","Send each group screenshots of a slide","Use Viewer access only"],
+    "answer": [0],
+    "exp": "A shared presentation gives group members a common editable workspace.",
+    "multi": false
+  },
+  {
+    "domain": "Create",
+    "q": "A teacher wants to post a resource in Classroom without requiring students to submit work. Which type of post is most appropriate?",
+    "choices": ["Material","Quiz assignment","Question with required response","Returned assignment"],
+    "answer": [0],
+    "exp": "A Material post is appropriate for resources that do not require submission.",
+    "multi": false
+  },
+  {
+    "domain": "Create",
+    "q": "You want a form to require students to answer an important question before submitting. Which setting should you use?",
+    "choices": ["Mark the question Required","Turn on Meet captions","Create a Drive shortcut","Add a Calendar color"],
+    "answer": [0],
+    "exp": "Required questions must be completed before submission.",
+    "multi": false
+  }
+]
