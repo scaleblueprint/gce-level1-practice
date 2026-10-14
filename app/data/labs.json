@@ -1,0 +1,107 @@
+[
+  {
+    "id": "drive",
+    "name": "Drive sharing",
+    "title": "Drive resource setup",
+    "tasks": [
+      "Create a folder named Science Resources.",
+      "Create a document named Lab Safety Guide inside the folder.",
+      "Share the document with students@class.example as Viewer.",
+      "Share it with coteacher@class.example as Editor."
+    ],
+    "expected": {
+      "folder": "Science Resources",
+      "doc": "Lab Safety Guide",
+      "studentEmail": "students@class.example",
+      "studentRole": "Viewer",
+      "teacherEmail": "coteacher@class.example",
+      "teacherRole": "Editor"
+    }
+  },
+  {
+    "id": "classroom",
+    "name": "Classroom assignment",
+    "title": "Create a Classroom assignment",
+    "tasks": [
+      "Create an assignment titled Ecosystem Reflection.",
+      "Set the due date to 2026-10-20.",
+      "Attach Reflection Template.",
+      "Choose Make a copy for each student."
+    ],
+    "expected": {
+      "title": "Ecosystem Reflection",
+      "due": "2026-10-20",
+      "attachment": "Reflection Template",
+      "attachmentMode": "Make a copy for each student"
+    }
+  },
+  {
+    "id": "calendar",
+    "name": "Calendar + Meet",
+    "title": "Schedule a recurring Meet",
+    "tasks": [
+      "Create an event titled Weekly Planning Meeting.",
+      "Set recurrence to Weekly.",
+      "Add Google Meet conferencing.",
+      "Invite team@class.example."
+    ],
+    "expected": {
+      "title": "Weekly Planning Meeting",
+      "repeat": "Weekly",
+      "meet": true,
+      "guest": "team@class.example"
+    }
+  },
+  {
+    "id": "gmail",
+    "name": "Gmail organization",
+    "title": "Search, label and filter mail",
+    "tasks": [
+      "Search for mail from principal@class.example with an attachment.",
+      "Create a label named Leadership.",
+      "Create a filter for mail from principal@class.example.",
+      "Configure the filter to apply the Leadership label."
+    ],
+    "expected": {
+      "search_contains": ["from:principal@class.example", "has:attachment"],
+      "label": "Leadership",
+      "filterFrom": "principal@class.example",
+      "filterLabel": "Leadership"
+    }
+  },
+  {
+    "id": "forms",
+    "name": "Forms quiz",
+    "title": "Build a short quiz",
+    "tasks": [
+      "Create a form titled Exit Ticket.",
+      "Turn on Quiz mode.",
+      "Add a required multiple-choice question: Which activity helped you most?",
+      "Set the choices to Discussion, Practice, and Video."
+    ],
+    "expected": {
+      "title": "Exit Ticket",
+      "quiz": true,
+      "question": "Which activity helped you most?",
+      "required": true,
+      "choices": ["Discussion", "Practice", "Video"]
+    }
+  },
+  {
+    "id": "sheets",
+    "name": "Sheets analysis",
+    "title": "Analyze response data",
+    "tasks": [
+      "Sort the table by Student A→Z.",
+      "Filter to show only Class 5A.",
+      "Calculate the average of the Rating column.",
+      "Create a Column chart using Activity categories."
+    ],
+    "expected": {
+      "sort": "Student A→Z",
+      "filter": "5A",
+      "average": 4,
+      "chart": "Column chart"
+    }
+  }
+]
