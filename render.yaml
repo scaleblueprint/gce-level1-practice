@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: gce-level1-practice
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: SINGLE_USER
+        value: "true"
+      - key: HTTPS_ONLY
+        value: "true"
+      - key: DATABASE_URL
+        sync: false
