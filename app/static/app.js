@@ -24,10 +24,25 @@ function notify(title,message,kind='info'){
   box.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
+function showWelcomeForNewLearner(){
+  const email=(BOOT?.user?.email||'learner').toLowerCase();
+  const key=`gce_welcome_seen:${email}`;
+  if(localStorage.getItem(key))return;
+  const hasHistory=(BOOT?.history||[]).length>0;
+  if(hasHistory||ACTIVE)return;
+  localStorage.setItem(key,'1');
+  notify(
+    'Welcome to Educator Level 1 Practice!',
+    `Your account is ready and your progress will be saved automatically. A good path is <b>Exam Guide → Study → Mock Exam</b>.<div class="row" style="margin-top:10px"><button onclick="view('guide')">Read Exam Guide</button><button onclick="view('study')">Open Study</button><button class="primary" onclick="view('dashboard')">Start from Dashboard</button></div>`,
+    'success'
+  );
+}
+
 async function load(){
   BOOT=await api('/api/bootstrap');QUESTIONS=BOOT.questions;LABS=BOOT.labs;ACTIVE=BOOT.active;
   renderDashboard();renderHistory();
   if(ACTIVE){renderExam();startTimer()}else{clearInterval(timerHandle)}
+  showWelcomeForNewLearner();
 }
 
 function renderDashboard(){
